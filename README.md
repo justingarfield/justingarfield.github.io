@@ -1,37 +1,41 @@
-## Welcome to GitHub Pages
+## For WSL Bash
 
-You can use the [editor on GitHub](https://github.com/justingarfield/justingarfield.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### Install Ruby / Deps / Jekyll
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+* BrightBox PPA was broken and 404
+* See: [https://jekyllrb.com/docs/installation/ubuntu/](Jekyll on Ubuntu)
 
-### Markdown
+```bash
+sudo apt-get install ruby-full build-essential zlib1g-dev gh
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
+echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
+echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 
-```markdown
-Syntax highlighted code block
+gem install jekyll bundler
 
-# Header 1
-## Header 2
-### Header 3
+gh auth login
+gh repo clone justingarfield.github.io
+cd justingarfield.github.io
 
-- Bulleted
-- List
+jekyll new --skip-bundle .
 
-1. Numbered
-2. List
+sed -i '/^[^#]/ s/\(^.*gem "jekyll", "~> .*$\)/#\ \1/' Gemfile
 
-**Bold** and _Italic_ and `Code` text
+# See https://pages.github.com/versions/ for github-pages gem version (currently 228)
+sed -i 's/.*# gem "github-pages", group: :jekyll_plugins.*/gem "github-pages", "~> 228", group: :jekyll_plugins/' Gemfile
 
-[Link](url) and ![Image](src)
+bundle install
+bundle add webrick
+
+bundle exec jekyll serve
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Navigate to: http://127.0.0.1:4000/
 
-### Jekyll Themes
+Upgrade Gems over-time
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/justingarfield/justingarfield.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+```bash
+bundle update github-pages
+```

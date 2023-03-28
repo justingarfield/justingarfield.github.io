@@ -1,0 +1,68 @@
+digraph G {
+  start[shape=circle]
+  end[shape=doublecircle]
+
+  "soc_powerup"[label="BCM2711 SoC\npowers up" style="filled" fillcolor=green]
+  "read_otp"[label="Read OTP to determine\nif the nRPIBOOT\nGPIO is configured" style="filled" fillcolor=green]
+  "is_nRPIBOOT_high"[shape="diamond" label="Is nRPIBOOT\nGPIO high?" style="filled" fillcolor=green]
+  "nRPIBOOT_GPIO_not_defined"[shape="diamond" label="Is nRPIBOOT GPIO\ndefined in OTP?" style="filled" fillcolor=green]
+  "check_otp"[label="OTP states recovery.bin\ncan be loaded\nfrom SD/EMMC?" style="filled" fillcolor=green]
+  "if_sd_recovery_bin"[label="SD recovery.bin is enabled?" style="filled" fillcolor=green]
+  "run_recovery_bin"[label="Run recovery.bin and\nupdate the SPI EEPROM"]
+  "check_spi_eeprom"[label="Check SPI EEPROM\nfor second stage loader" style="filled" fillcolor=green]
+  "recovery_from_usb"[label="Attempt to load recovery.bin\nfrom USB device boot"]
+  "recovery_from_usb_success"[label="run recovery.bin and update\nthe SPI EEPROM or switch to\nUSB mass storage device mode"]
+
+  "init_clocks"[label="Initialise clocks and SDRAM" style="filled" fillcolor=green]
+  "read_eeprom"[label="Read the EEPROM configuration file" style="filled" fillcolor=green]
+  
+  subgraph cluster_talos_pi_4 {
+    label = "Talos - Raspberry Pi 4";
+    
+    subgraph cluster_first_bl {
+      label = "First Stage Bootloader";
+      
+      soc_powerup->read_otp
+      read_otp->is_nRPIBOOT_high
+
+      is_nRPIBOOT_high->check_otp[label=Yes]
+      is_nRPIBOOT_high->nRPIBOOT_GPIO_not_defined[label=No]
+
+      nRPIBOOT_GPIO_not_defined->check_otp[label=No]
+      nRPIBOOT_GPIO_not_defined->recovery_from_usb[label=Yes]
+
+      check_otp->if_sd_recovery_bin[label=Yes]
+      check_otp->check_spi_eeprom[label=No]
+
+      if_sd_recovery_bin->run_recovery_bin[label=Yes]
+      if_sd_recovery_bin->check_spi_eeprom[label=No]
+
+      run_recovery_bin->check_spi_eeprom
+      check_spi_eeprom->recovery_from_usb[label=Failure]
+
+      recovery_from_usb->recovery_from_usb_success[label=Success]
+      recovery_from_usb->recovery_from_usb[label="Retry USB\ndevice boot"]
+    }
+
+    subgraph cluster_second_bl {
+      label = "Second Stage Bootloader";
+      init_clocks->read_eeprom
+    }
+
+    check_spi_eeprom->init_clocks[label=Success]
+  }
+
+  subgraph cluster_sidero_pi_4 {
+    label = "Sidero - Raspberry Pi 4";
+
+    subgraph cluster_tftp {
+      label = "TFTP";
+    }
+
+    subgraph cluster_http {
+      label = "HTTP";
+    }
+  }
+
+  start->soc_powerup
+}
