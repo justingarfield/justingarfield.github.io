@@ -57,7 +57,7 @@ then add to ~/.docker/config.json
 ```
 
 ```bash
-PLATFORM=linux/arm64 USERNAME=justingarfield PUSH=true TAG=v1.3.0-1 make raspberrypi4b-uefi
+PLATFORM=linux/arm64 USERNAME=justingarfield PUSH=true TAG=v1.3.0-2 make raspberrypi4b-uefi
 
 kubectl -n sidero-system patch deployments.apps sidero-controller-manager --patch "$(cat patch-tftp-raspberrypi4b-uefi.yaml)"
 ```
@@ -153,10 +153,3 @@ iPXE Template for `ipxe-sanboot`: https://github.com/siderolabs/sidero/blob/v0.5
 Raspberry Pi 4 - Boot EEPROM: https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-4-boot-eeprom
 Raspberry Pi 4 - Boot Flow: https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-4-boot-flow
 Raspberry Pi 4 - The boot Folder: https://www.raspberrypi.com/documentation/computers/configuration.html#the-boot-folder
-
-
-## Troubleshooting
-
-### Sidero isn't allocating my server(s)
-
-* If you're using a custom ServerClass, 

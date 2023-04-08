@@ -56,19 +56,11 @@ rm $HOME/downloads/${KUBECTL_FILENAME}-${KUBECTL_VERSION}
 * You're now running Talos OS on this Pi 4
 
 ```bash
-export SIDERO_ENDPOINT=192.168.68.5
+export SIDERO_ENDPOINT=192.168.68.4
 
 talosctl gen config sidero-metal https://${SIDERO_ENDPOINT}:6443/ \
 		--additional-sans=sidero-metal,sidero-metal.kubernetes.lesmerises.jgarfield.com \
-		--config-patch-control-plane @./talos-linux/patch-sidero-controlplane.yaml \
-		--dns-domain=kubernetes.lesmerises.jgarfield.com \
-		--install-disk=/dev/sda \
-		--install-image=ghcr.io/siderolabs/installer:v1.3.6 \
-		--kubernetes-version=v1.26.3 \
-		--persist=true \
-		--talos-version=v1.3.6 \
-		--version=v1alpha1 \
-		--with-cluster-discovery=true \
+		--config-patch-control-plane @./talos-linux/patch-sidero-controlplane-config.yaml \
 		--with-docs=false \
 		--with-examples=false \
 		--output-types=controlplane,talosconfig \
@@ -79,12 +71,9 @@ talosctl config endpoints ${SIDERO_ENDPOINT}
 talosctl config nodes ${SIDERO_ENDPOINT}
 talosctl kubeconfig
 
-talosctl apply-config --insecure -n ${SIDERO_ENDPOINT} -f controlplane.yaml
+talosctl apply-config --insecure -n ${SIDERO_ENDPOINT} -f ./_out/controlplane.yaml
 
-talosctl bootstrap
-
-kubectl -n kube-system wait --for=condition=Ready --all pods
-talosctl health
+talosctl bootstrap && kubectl -n kube-system wait --for=condition=Ready --all pods && talosctl health
 ```
 
 ```bash

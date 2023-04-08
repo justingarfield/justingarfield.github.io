@@ -89,3 +89,8 @@ Navigate to *Services* -> *Nginx* -> *Configuration* -> *General Settings*
 
 * **Check** `Enable nginx`
 * **Click** `Apply`
+
+## Firewall Rules
+
+| | | | |
+|-|-|-|-|
