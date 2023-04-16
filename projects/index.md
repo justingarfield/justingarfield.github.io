@@ -1,8 +1,7 @@
 ---
-layout: projects
+layout: base
 title: Projects
 ---
-# {{ "Hello World!" | downcase }}
 
 Welcome to my collection of ongoing projects. These pages hold notes, observations, diagrams, and whatever else I've come across in my journies working with the following technologies and platforms. 
 

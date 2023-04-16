@@ -1,0 +1,162 @@
+---
+---
+
+/*
+palette derived from Hi Fi Rush image
+
+#946740
+#906979
+#23343C
+#577188
+#663641
+#E2E4E0
+#86AEBC
+#CCB66E
+#AD9DA2
+#2FD0DB
+#2A887F
+#E2293F
+#DBD194
+#588AF4
+#ABBFC5
+#3078BF
+#58E5F0
+#2B6488
+#AA40D7
+#C9B6C1
+*/
+html {
+    color: #E2E4E0;
+    font-size: 100%;
+    font-family: 'Baloo 2', cursive;
+}
+
+body {
+    background: #588AF4;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+
+a, a:hover, a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+section.welcome img {
+    width: 384px;
+    height: 384px;
+}
+
+a:visited {
+    /*color: #23343C;*/
+}
+
+a:hover {
+    color: #DBD194;
+}
+
+nav {
+    background: #3078BF;
+    height: 50px;
+    padding: 10px;
+}
+
+nav .site-title {
+    float: left;
+    height: 100%; 
+}
+
+nav .site-title h1 {
+    height: 100%; 
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav .navOptions {
+    float: right;
+    height: 100%;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav .navOptions a {
+    font-size: 125%;
+    margin: 0 15px;
+    text-transform: uppercase;
+}
+
+footer {
+    background: #ABBFC5;
+    min-height: 10em;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+/* #3D4047 = video comms background */
+/* #BCFA99 = video comms green */
+/* #4E4D49 = video comms transparent name plate */
+.frontpage-posts {
+    background: #3D4047;
+    height: 350px;
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+}
+
+.frontpage-post {
+    border: 1px solid #BCFA99;
+    height: 100%;
+    width: 19%;
+    padding: 0;
+    float: left;
+    margin: 0;
+}
+
+.frontpage-post .transparent-overlay {
+    background: #4E4D49;
+    vertical-align: bottom;
+    opacity: 75%;
+    padding: 5px;
+    margin: 0 auto;
+    text-align: center;
+    width: 75%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #4E4D49;
+    min-width: 260px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 10px 10px;
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown-content li {
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

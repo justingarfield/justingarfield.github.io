@@ -1,5 +1,27 @@
 ---
-layout: page
+layout: base
 ---
 
+<section class="welcome">
+  <img src="/img/OIG.jpg" />
+</section>
+
 {{ content }}
+
+<section>
+  <h2>Recent Posts</h2>
+
+  {% assign posts = paginator.posts | default: site.posts %}
+
+  <ul class="frontpage-posts">
+    {% for post in posts %}
+    <li class="frontpage-post">
+      <article class="transparent-overlay">
+        <a href="{{ post.url | absolute_url }}">
+          <h2>{{ post.title | strip_html }}</h2>
+        </a>
+      </article>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
