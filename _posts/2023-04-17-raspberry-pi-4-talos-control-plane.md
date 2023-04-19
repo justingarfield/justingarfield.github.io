@@ -1,9 +1,8 @@
 ---
+layout: post
 title: Talos v1.4 Control Plane w/ Cilium on Raspberry Pi 4B
 tags: talos cilium kubernetes
 ---
-
-# {{ page.title }}
 
 ## Overview
 
@@ -13,14 +12,12 @@ A [seperate post](#) covers setting up the worker node(s).
 
 This post assumes you've already prepped your node(s) with a fresh install of Talos Linux.
 
-## Creating the configuration files
+## <a name="#creating-config-files">Creating the configuration files</a> 
 
 {% capture warning_note %}
-Every file created in this post will contain sensitive information!
-<br />
-The post itself supplies throw-away dummy values that don't matter.
-<br />
-<strong>Make sure you store your own files in a secure location when finished setting up your cluster(s), as they hold keys, certificates, network information, etc.</strong>
+<p>Every file created in this post will contain sensitive information!</p>
+<p>The post itself supplies throw-away dummy values that don't matter.</p>
+<p><strong>Make sure you store your own files in a secure location when finished setting up your cluster(s), as they hold keys, certificates, network information, etc.</strong></p>
 {% endcapture %}
 {% include warning-bubble.html content=warning_note %}
 
@@ -187,7 +184,7 @@ yq -i '.cluster.inlineManifests[0].contents |= load_str("cilium-helm-k8s-manifes
 ```bash
 talosctl gen config hybrid-cluster https://hybrid-control-plane.kubernetes.lesmerises.jgarfield.com:6443 \
     --with-secrets secrets-bundle.yaml \
-    --additional-sans=hybrid-control-plane,192.168.68.8 \
+    --additional-sans=hybrid-control-plane,192.168.22.8 \
     --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
     --config-patch @./talos-linux/patch-manual-controlplane-config.yaml \
     --with-docs=false \
@@ -261,6 +258,12 @@ kubectl debug -n kube-system pod/coredns-5597575654-t56mc -it --image=nicolaka/n
 kubectl debug -n kube-system pod/kube-apiserver-hybrid-cp01 -it --image=nicolaka/netshoot
 kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot
 ```
+
+{% capture security_note %}
+<p>Every file you just created contains sensitive information!</p>
+<p>Now is the time to make backups and/or move these files off your machien to a more secure location.</p>
+{% endcapture %}
+{% include security-bubble.html content=security_note %}
 
 ## References
 

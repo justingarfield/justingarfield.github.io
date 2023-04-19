@@ -161,19 +161,23 @@ footer {
     display: block;
 }
 
-.warning-bubble {
+.warning-bubble,
+.security-bubble {
     border: 1px solid #CE3645;
     color: #0A1424;
+    margin: 20px 0;
 }
 
-.warning-bubble span {
+.warning-bubble span,
+.security-bubble span {
     font-weight: bold;
     background: #E1A02C;
     display: block;
 }
 
-.warning-bubble p {
-    padding: 0 0 0 1.65em;
+.warning-bubble p,
+.security-bubble p {
+    padding: .5em 0 .5em 1.65em;
     margin: 0;
     background: #DAC96F;
 }

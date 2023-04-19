@@ -31,7 +31,7 @@ youtube_username: JustinGarfield
 
 # Build settings
 #theme: minima
-remote_theme: daattali/beautiful-jekyll@5.0.0
+#remote_theme: daattali/beautiful-jekyll@5.0.0
 plugins:
   - jekyll-feed
 
