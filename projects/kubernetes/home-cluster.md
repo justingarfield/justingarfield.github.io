@@ -5,7 +5,7 @@ title: My Home Kubernetes Cluster
 
 ## Purpose
 
-Over the years as I've been building out my at-home software stack, it's become increasingly hard to keep track of all the software in-use, versioning, moving containers around to different hardware I can afford to run, etc.
+Over the years as I've been building out my at-home software stack, it has become increasingly hard to keep track of all the software in-use, versioning, moving containers around to different hardware I can afford to run, etc.
 
 Since I've been wanting to shift more to Ops vs. Software Engineering lately, I decided to spend some time trying out different combinations of Kubernetes solutions. I tested things ranging from single-node Microk8s / Minikube to K3s to VMs vs. giant-ass HP DL380s, and everything in-between _(within the context of hardware you would find a person's home...haven't scaled to anything above 5-nodes total yet)_.
 

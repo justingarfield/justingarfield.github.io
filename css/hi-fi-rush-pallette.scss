@@ -160,3 +160,32 @@ footer {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.warning-bubble {
+    border: 1px solid #CE3645;
+    color: #0A1424;
+}
+
+.warning-bubble span {
+    font-weight: bold;
+    background: #E1A02C;
+    display: block;
+}
+
+.warning-bubble p {
+    padding: 0 0 0 1.65em;
+    margin: 0;
+    background: #DAC96F;
+}
+
+.highlighter-rouge {
+    margin: 1em;
+}
+
+.highlighter-rouge .highlight {
+    padding: 1px 5px;
+}
+
+article {
+    padding: 1em;
+}

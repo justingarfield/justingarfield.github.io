@@ -49,6 +49,3 @@ These ports are used _after_ you pick a Realm to connect to
 * [ymir wow packet sniffer](https://github.com/TrinityCore/ymir)
 * [Steps to make a good sniff of an area](https://gist.github.com/Subv/c3498b5e952c5c978bcf)
 * [wowdev/WoWDBDefs](https://github.com/wowdev/WoWDBDefs)
-* []()
-* []()
-* []()

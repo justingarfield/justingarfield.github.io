@@ -29,6 +29,8 @@ sed -i 's/.*# gem "github-pages", group: :jekyll_plugins.*/gem "github-pages", "
 bundle install
 bundle add webrick
 
+rougify style github > style.css
+
 bundle exec jekyll serve
 ```
 

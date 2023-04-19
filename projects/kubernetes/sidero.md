@@ -68,7 +68,6 @@ talosctl gen config sidero-metal https://${SIDERO_ENDPOINT}:6443/ \
 
 talosctl config merge ./_out/talosconfig
 talosctl config endpoints ${SIDERO_ENDPOINT}
-talosctl config nodes ${SIDERO_ENDPOINT}
 talosctl kubeconfig
 
 talosctl apply-config --insecure -n ${SIDERO_ENDPOINT} -f ./_out/controlplane.yaml
