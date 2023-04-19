@@ -32,7 +32,7 @@ html {
 }
 
 body {
-    background: #588AF4;
+    background: #181F2B;
     margin: 0;
     padding: 0;
 }
@@ -43,7 +43,7 @@ h1, h2, h3 {
 }
 
 a, a:hover, a:visited {
-    color: #fff;
+    color: #BB7169;
     text-decoration: none;
 }
 
@@ -61,7 +61,7 @@ a:hover {
 }
 
 nav {
-    background: #3078BF;
+    background: #495D79;
     height: 50px;
     padding: 10px;
 }
@@ -179,13 +179,21 @@ footer {
 }
 
 .highlighter-rouge {
-    margin: 1em;
+    /*margin: 1em;*/
 }
 
 .highlighter-rouge .highlight {
     padding: 1px 5px;
 }
 
-article {
+main {
     padding: 1em;
+}
+
+article h2, h3, h4 {
+    margin: 1em 0 0 0;
+}
+
+article p {
+    margin: 0 0 .5em 0;
 }

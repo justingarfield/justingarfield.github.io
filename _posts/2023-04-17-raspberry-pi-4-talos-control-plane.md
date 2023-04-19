@@ -1,6 +1,9 @@
 ---
-title: Raspberry Pi 4 Talos v1.4 Control Plane w/ Cilium
+title: Talos v1.4 Control Plane w/ Cilium on Raspberry Pi 4B
+tags: talos cilium kubernetes
 ---
+
+# {{ page.title }}
 
 ## Overview
 
@@ -10,16 +13,16 @@ A [seperate post](#) covers setting up the worker node(s).
 
 This post assumes you've already prepped your node(s) with a fresh install of Talos Linux.
 
+## Creating the configuration files
+
 {% capture warning_note %}
 Every file created in this post will contain sensitive information!
 <br />
 The post itself supplies throw-away dummy values that don't matter.
 <br />
-Make sure you store your own files in a secure location when finished setting up your cluster(s), as they hold keys, certificates, network information, etc.
+<strong>Make sure you store your own files in a secure location when finished setting up your cluster(s), as they hold keys, certificates, network information, etc.</strong>
 {% endcapture %}
 {% include warning-bubble.html content=warning_note %}
-
-## Creating the configuration files
 
 Generating and tweaking the Talos Machine Configuration files will probably be where most of your time is spent. It took me a lot of trial-and-error with different configuration values to get everything working the way I wanted (DNS, Hostnames, etc.)
 
@@ -34,26 +37,32 @@ A few things to make note of:
 * The Cilium Manifest should only get deployed to the Control Plane nodes, _never_ on Worker Plane nodes
 * The Secrets Bundle is used for both Control Plane _and_ Worker Plane nodes
 * Patch files are used to transform/modify a Machine Configuration, so that they can easily be tweaked for different environments
+* I show the Worker Plane Patch file in the diagram, but I personally didn't have to use it since the All Nodes patch was enough for my environment
 
 ### Folder Layout
 
 ```bash
 my-talos-cluster\
-    template\
-        control-plane.patch
-        cp01.patch
-        cp02.patch
-        cp03.patch
-        wk01.patch
-        wk02.patch
-        secrets-bundle.yaml
-        worker-plane.patch
     machine-configs\
-        cp01.yaml
-        cp02.yaml
-        cp03.yaml
-        wk01.yaml
-        wk02.yaml
+        node-cp01.yaml
+        node-cp02.yaml
+        node-cp03.yaml
+        node-wk01.yaml
+        node-wk02.yaml
+    machine-templates\
+        controlplane.yaml
+        worker.yaml
+    patches\
+        all-nodes.patch
+        controlplane.patch
+        node-cp01.patch
+        node-cp02.patch
+        node-cp03.patch
+        node-wk01.patch
+        node-wk02.patch
+        worker.patch
+    secrets-bundle.yaml
+    talosconfig
 ```
 
 ### Generate a Secrets Bundle
@@ -64,22 +73,22 @@ Working our way from left-to-right in the diagram above, we'll start with the Se
 talosctl gen secrets -o template/secrets-bundle.yaml
 ```
 
-If you happen to have your own PKI or Cluster Bootstrap Token, you can use the `--from-kubernetes-pki` and `--kubernetes-bootstrap-token` options respectively.
+If you happen to have your own PKI or Cluster Bootstrap Token, you can also use the `--from-kubernetes-pki` and `--kubernetes-bootstrap-token` options respectively.
 
 ### Generate the Cilium K8s Manifest
 
 There are [multiple ways to install Cilium on Talos](https://www.talos.dev/v1.4/kubernetes-guides/network/deploying-cilium). This post will focus on using [Method 4: Helm manifests inline install](https://www.talos.dev/v1.4/kubernetes-guides/network/deploying-cilium/#method-4-helm-manifests-inline-install) with `kube-proxy` disabled.
 
-
 ```bash
 helm repo add cilium https://helm.cilium.io/
 helm repo update
 
-export KUBERNETES_API_SERVER_ADDRESS=hybrid-control-plane.kubernetes.lesmerises.jgarfield.com
+export KUBERNETES_API_SERVER_ADDRESS=cp.k8s.mydomain.tld
 export KUBERNETES_API_SERVER_PORT=6443
+export CILIUM_VERSION=1.13.0
 
 helm template cilium cilium/cilium \
-    --version 1.13.0 \
+    --version ${CILIUM_VERSION} \
     --namespace kube-system \
     --set ipam.mode=kubernetes \
     --set=kubeProxyReplacement=strict \
@@ -88,28 +97,91 @@ helm template cilium cilium/cilium \
     --set=cgroup.autoMount.enabled=false \
     --set=cgroup.hostRoot=/sys/fs/cgroup \
     --set=k8sServiceHost="${KUBERNETES_API_SERVER_ADDRESS}" \
-    --set=k8sServicePort="${KUBERNETES_API_SERVER_PORT}" > cilium.yaml
+    --set=k8sServicePort="${KUBERNETES_API_SERVER_PORT}" > cilium-helm-k8s-manifest.yaml
 ```
 
-### Generate the Control Plane Patch
+Assuming that you're using a Load Balancer in your setup, you'll want to set the `KUBERNETES_API_SERVER_ADDRESS` variable to a DNS name that points to the Load Balancer IP Addaress; if a DNS record isn't available, set this to the Load Balancer's IP Address.
+
+Let's breakdown what's going on here...
+
+| Parameter | Description |
+| :--- | :--- |
+| `--version` | the version of cilium to install |
+| `--namespace` | the k8s namespace to place the cilium components in |
+| [`--set ipam.mode=kubernetes`](https://docs.cilium.io/en/stable/network/concepts/ipam/kubernetes/) | what cilium should use for IP Address Management (`kubernetes` = `kube-controller-manager` pod CIDR allocation) |
+| [`--set=kubeProxyReplacement=strict`](https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#kube-proxy-hybrid-modes) | how the cilium `kube-proxy` replacement should behave |
+| [`--set=securityContext.capabilities.*`](https://github.com/cilium/cilium/issues/21603) | specifies the required capabilities needed for the Cilium Components |
+| [--set=cgroup.autoMount.enabled=false](#) |  |
+| [--set=cgroup.autoMount.enabled=/sys/fs/cgroup](#) |  |
+| [--set=k8sServiceHost](#) | |
+| [--set=k8sServiceHost](#) | |
+| [Cilium Helm Reference](https://docs.cilium.io/en/stable/helm-reference) | more detailed explanation of available options and what they do can be found here |
+
+### Generate the Control Plane Machine Config
 
 Create a file named `patch-manual-controlplane-config.yaml`
 
-`<insert example file for reference>`
+```yaml
+version: v1alpha1
+persist: true
+machine:
+  certSANs:
+    - talos-cluster-endpoints.kubernetes.lesmerises.jgarfield.com
+    - talos-cluster-endpoints
+    - 192.168.22.8
+  install:
+    disk: /dev/sda
+    image: ghcr.io/siderolabs/installer:v1.4.0
+  network:
+    interfaces:
+      - interface: eth0
+        dhcp: false
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.22.1
+    nameservers:
+      - 192.168.22.1
+  time:
+    disabled: false
+    servers:
+      - 192.168.22.1
+    bootTimeout: 2m0s
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:v1.27.1
+    clusterDNS:
+      - 10.96.0.10
+cluster:
+  apiServer:
+    image: registry.k8s.io/kube-apiserver:v1.27.1
+  controllerManager:
+    image: registry.k8s.io/kube-controller-manager:v1.27.1
+  discovery:
+    registries:
+      kubernetes:
+        disabled: false
+      service:
+        disabled: true
+  network:
+    dnsDomain: k8s.mydomain.tld
+    cni:
+      name: none
+  proxy:
+    disabled: true
+  scheduler:
+    image: registry.k8s.io/kube-scheduler:v1.27.1
+  inlineManifests:
+    - name: cilium
+      contents: |
+        - place-holder
+```
 
 Next we add Cilium support with an "Inline Manifest"...
 https://www.talos.dev/v1.3/kubernetes-guides/network/deploying-cilium/#method-4-helm-manifests-inline-install
 
 Now add inline manifest to control-plane config file...
 
-```
-TODO: use yq to automate this part
-
-cluster:
-  inlineManifests:
-    - name: cilium
-      contents: |
-        <insert cilium.yaml file contents here>
+```bash
+yq -i '.cluster.inlineManifests[0].contents |= load_str("cilium-helm-k8s-manifest.yaml")' ./machine-configs/control-plane.yaml
 ```
 
 ```bash
@@ -123,32 +195,51 @@ talosctl gen config hybrid-cluster https://hybrid-control-plane.kubernetes.lesme
     --output ./_out
 ```
 
+### Generate the final Node Machine Configs
+
 ```bash
-talosctl machineconfig patch _out/controlplane.yaml --patch @./talos-linux/hybrid-cluster/hybrid-cp01.patch --output _out/hybrid-cp01.yaml
-talosctl machineconfig patch _out/controlplane.yaml --patch @./talos-linux/hybrid-cluster/hybrid-cp02.patch --output _out/hybrid-cp02.yaml
-talosctl machineconfig patch _out/controlplane.yaml --patch @./talos-linux/hybrid-cluster/hybrid-cp03.patch --output _out/hybrid-cp03.yaml
-talosctl machineconfig patch _out/worker.yaml --patch @./talos-linux/hybrid-cluster/wk01.patch --output _out/wk01.yaml
+# Do something a little more fancy eventually
+# ls ./patches/node-*.patch | while read patchFile; do talosctl machineconfig patch ./patches/controlplane.yaml --patch @$$patchFile --output ./machine-configs/$$patchFile.yaml
+talosctl machineconfig patch ./machine-templates/controlplane.yaml --patch @./patches/node-cp01.patch --output ./machine-configs/node-cp01.yaml
+talosctl machineconfig patch ./machine-templates/controlplane.yaml --patch @./patches/node-cp02.patch --output ./machine-configs/node-cp02.yaml
+talosctl machineconfig patch ./machine-templates/controlplane.yaml --patch @./patches/node-cp03.patch --output ./machine-configs/node-cp03.yaml
+talosctl machineconfig patch ./machine-templates/worker.yaml --patch @./patches/node-wk01.patch --output ./machine-configs/node-wk01.yaml
+talosctl machineconfig patch ./machine-templates/worker.yaml --patch @./patches/node-wk02.patch --output ./machine-configs/node-wk02.yaml
+```
 
-talosctl config merge ./_out/talosconfig
-talosctl config endpoints hybrid-talos-endpoints.kubernetes.lesmerises.jgarfield.com
+### Configure $HOME/.talos/config
 
-talosctl apply-config --insecure --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com --file _out/cp01.yaml
-talosctl apply-config --insecure --nodes hybrid-cp02.kubernetes.lesmerises.jgarfield.com --file _out/cp02.yaml
-talosctl apply-config --insecure --nodes hybrid-cp03.kubernetes.lesmerises.jgarfield.com --file _out/cp03.yaml
-talosctl apply-config --insecure --nodes hybrid-wk01.kubernetes.lesmerises.jgarfield.com --file _out/wk01.yaml
-talosctl apply-config --insecure --nodes hybrid-wk02.kubernetes.lesmerises.jgarfield.com --file _out/wk02.yaml
+```bash
+talosctl config merge ./talosconfig
+talosctl config endpoints talos-cluster-endpoints.k8s.mydomain.tld
+```
 
+### Apply Machine Configs to Nodes
+
+```bash
+talosctl apply-config --insecure --nodes cp01.k8s.mydomain.tld --file ./machine-configs/node-cp01.yaml
+talosctl apply-config --insecure --nodes cp02.k8s.mydomain.tld --file ./machine-configs/node-cp02.yaml
+talosctl apply-config --insecure --nodes cp03.k8s.mydomain.tld --file ./machine-configs/node-cp03.yaml
+talosctl apply-config --insecure --nodes wk01.k8s.mydomain.tld --file ./machine-configs/node-wk01.yaml
+talosctl apply-config --insecure --nodes wk02.k8s.mydomain.tld --file ./machine-configs/node-wk02.yaml
+```
+
+### Light your cluster up!
+
+```bash
 talosctl bootstrap --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com
 ```
+
+```
+talosctl kubeconfig --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com
+```
+
+### Ruh roh!
 
 This is usually the point where things can start to go wrong. Be it misconfigured DNS, bad configuration settings, etc.
 
 Be prepared to heavily use commands like:
 `talosctl` and `kubectl`
-
-```
-talosctl kubeconfig --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com
-```
 
 If your node(s) don't seem to be fully booting and keep showing NotReady state, check the logs of the Cilium deployment...
 
