@@ -4,11 +4,12 @@ title: Talos v1.4 Control Plane w/ Cilium on Raspberry Pi 4B
 tags: talos cilium kubernetes
 ---
 
+* Overview
+* Creating the Configuration Files
+
 ## Overview
 
 This post dives deeper into setting up a 3-node Control Plane using the [Talos Linux Getting Started](https://www.talos.dev/v1.4/introduction/getting-started/) guide. It targets using the Raspberry Pi 4B as the control plane nodes.
-
-A [seperate post](#) covers setting up the worker node(s).
 
 This post assumes you've already prepped your node(s) with a fresh install of Talos Linux.
 
@@ -114,17 +115,17 @@ Let's breakdown what's going on here...
 | [--set=k8sServiceHost](#) | |
 | [Cilium Helm Reference](https://docs.cilium.io/en/stable/helm-reference) | more detailed explanation of available options and what they do can be found here |
 
-### Generate the Control Plane Machine Config
+### Generate the All Nodes Patch
 
-Create a file named `patch-manual-controlplane-config.yaml`
+Create a file named `patches/all-nodes.patch`...
 
 ```yaml
 version: v1alpha1
 persist: true
 machine:
   certSANs:
-    - talos-cluster-endpoints.kubernetes.lesmerises.jgarfield.com
-    - talos-cluster-endpoints
+    - talos-endpoints.k8s.mydomain.tld
+    - talos-endpoints
     - 192.168.22.8
   install:
     disk: /dev/sda
@@ -147,6 +148,98 @@ machine:
     image: ghcr.io/siderolabs/kubelet:v1.27.1
     clusterDNS:
       - 10.96.0.10
+```
+
+Let's examine some of the sections in the configuration YAML file above, as these are changing the default behavior of Talos.
+
+#### Machine: Images
+
+```yaml
+image: ghcr.io/siderolabs/installer:v1.4.0
+image: ghcr.io/siderolabs/kubelet:v1.27.1
+```
+
+Notice that the image declarations are using fixed version numbers. This is important if you want to be able to re-create the same environment down the road, let's say in the event of a full hardware failure (voltage spike fries your Pis or something).
+
+If you don't use fixed version numbers, you may encounter a completely different experience and set of behaviors re-installing your cluster even on matching-hardware. I'm sure somewhere along all the images / helm charts I use, there's probably something pulling `latest`, but this at least gives me a fighting chance at having sanity after a disaster / major outage.
+
+Note: If you're wondering why `kube-proxy` isn't defined anywhere, it's because it never gets installed. I chose to go the route of using Cilium's `kube-proxy` replacement, so instead you'll see a `proxy: disabled: true` setting get applied further on in the article (down in the Control Plane Patch).
+
+#### Machine: CertSANS
+
+```yaml
+certSANs:
+  - talos-endpoints.k8s.mydomain.tld
+  - talos-endpoints
+  - 192.168.22.8
+```
+
+Since I use a load balancer in-front of my Talos Endpoints, I won't be hitting them directly when utilizing `talosctl` to manage clusters / nodes.
+
+In order for `talosctl` to not throw an invalid certificate error when establishing a connection to the endpoints, we need to ensure that a matching Subject Alternative Name (SAN) exists for the DNS name (and/or load balancer IP + DNS Hostname w/o Domain)
+
+#### Machine: Install
+
+```yaml
+install:
+    disk: /dev/sda
+```
+
+Since this particular setup is using USB-SSD storage, our target install disk should be `/dev/sda` vs. `/dev/mmcblk0` for SD Cards.
+
+This directive will only affect future Talos Upgrades, not the current install, as a Raspberry Pi image is considered a "raw disk image", which has essentially already been installed onto the SSD.
+
+#### Machine: Network
+
+```yaml
+network:
+  interfaces:
+    - interface: eth0
+      dhcp: false
+      routes:
+        - network: 0.0.0.0/0
+          gateway: 192.168.22.1
+  nameservers:
+    - 192.168.22.1
+```
+
+I chose to statically assign my network information, even though I also have DHCP configure it before fully provisioning Talos. This allows me to still get Talos Nodes online in the event my DHCP service is down for whatever reason.
+
+I also like to statically define the nameservers, as Talos will attempt to use Google's 8.8.8.8 by default (which in my environment just gets forwarded to a local DNS server anyway).
+
+You'll notice that node-specifics aren't included here, as this is a shared Machine Config used to create the Node-specific ones later. We'll store node-specific items in their own files.
+
+#### Machine: Time
+
+```yaml
+time:
+  disabled: false
+  servers:
+    - 192.168.22.1
+  bootTimeout: 2m0s
+```
+
+This is just ensuring that Talos points to my own NTP server vs. attempting to reach out to the internet for one.
+
+While not usually a problem, you definitely want to make sure that NTP is synchronizing to the same source (and syncing reguarly), because if your cluster nodes get too much time drift, your cluster will practically explode since no one will trust each other (due to expiration windows)
+
+#### Machine: Kubelet
+
+```yaml
+kubelet:
+  clusterDNS:
+    - 10.96.0.10
+```
+
+In my particular environment, I need to specifically tell kubelet to provide a DNS server of `10.96.0.10` to all pods in the cluster.
+
+Otherwise they get fed the Talos Nodes' `/etc/resolv.conf` file, which only contains my private / external DNS server, so pods can't resolve in-cluster resources properly.
+
+### Generate the Control Plane Patch
+
+Create a file named `patches/controlplane.patch`...
+
+```yaml
 cluster:
   apiServer:
     image: registry.k8s.io/kube-apiserver:v1.27.1
@@ -172,14 +265,78 @@ cluster:
         - place-holder
 ```
 
+#### Cluster: Images
+
+```yaml
+image: registry.k8s.io/kube-apiserver:v1.27.1
+image: registry.k8s.io/kube-controller-manager:v1.27.1
+image: registry.k8s.io/kube-scheduler:v1.27.1
+```
+
+Just locking in versions of container images we plan on using for our cluster. Same as above in the All Nodes Patch section.
+
+#### Cluster: Discovery
+
+```yaml
+discovery:
+  registries:
+    kubernetes:
+      disabled: false
+    service:
+      disabled: true
+```
+
+Talos will attempt to use a [cloud-based discovery service that SideroLabs hosts](https://www.talos.dev/v1.4/talos-guides/discovery/) themselves, which aids in forming clusters in environments that would otherwise require very tricky configurations. This service _is_ safe to use, as it encrypts all traffic to/from their discovery service, as well as removing your discovery information from their system in a relatively short timespan.
+
+In my particular environment, I decided to disable the cloud-based discovery, and go back to having discovery happen through K8s / etcd. Since I have full control over my network environment, and can just walk downstairs and physically work on my equipment, I didn't feel the need for more network traffic exiting my home network, just to find a node sitting 1-inch from the others in the same VLAN.
+
+#### Cluster: Network
+
+```yaml
+network:
+    dnsDomain: k8s.mydomain.tld
+    cni:
+      name: none
+```
+
+If you use anything other than the default `cluster.local` DNS Domain for your internal K8s DNS, specify that here using `dnsDomain`.
+
+Since this configuration is also going to use Cilium for a CNI _(instead of Flannel which is the default)_, we set `cni: name: none`. This instructs Talos to not provision a CNI as part of its bootstrap process. We'll instead install Cilium ourselves using an Inline Manifest.
+
+#### Cluster: Proxy
+
+```yaml
+proxy:
+  disabled: true
+```
+
+This ensures that `kube-proxy` doesn't get installed on the Talos Nodes. We don't want it getting installed since this post goes the route of using the Cilium `kube-proxy` replacement.
+
+#### Cluster: Inline Manifests
+
+```yaml
+inlineManifests:
+  - name: cilium
+    contents: |
+      - place-holder
+```
+
+This is a place-holder / stub that allows us to use `yq` later to inject the Cilium K8s Manifest into our Control Plane Machine Config.
+
+### Add Cilium K8s Manifest to Control Plane Patch
+
 Next we add Cilium support with an "Inline Manifest"...
 https://www.talos.dev/v1.3/kubernetes-guides/network/deploying-cilium/#method-4-helm-manifests-inline-install
-
-Now add inline manifest to control-plane config file...
 
 ```bash
 yq -i '.cluster.inlineManifests[0].contents |= load_str("cilium-helm-k8s-manifest.yaml")' ./machine-configs/control-plane.yaml
 ```
+
+This will find the `place-holder` property you added to the Control Plane Patch file in the previous step, and replace the place-holder content with the actual Cilium K8s Manifest located in `cilium-helm-k8s-manifest.yaml`
+
+After you're satisfied that you have the Cilium K8s Manifest correctly added to the Control Plane Patch, you can feel free to delete it, since you've captured all the contents in the Patch now. _I kept mine around while I worked through building this all out, but now I auto-delete it as part of a script)_
+
+### Generate the Plane Machine Configurations
 
 ```bash
 talosctl gen config hybrid-cluster https://hybrid-control-plane.kubernetes.lesmerises.jgarfield.com:6443 \
@@ -191,6 +348,10 @@ talosctl gen config hybrid-cluster https://hybrid-control-plane.kubernetes.lesme
     --with-examples=false \
     --output ./_out
 ```
+
+### Create Node Patches
+
+
 
 ### Generate the final Node Machine Configs
 
@@ -261,7 +422,7 @@ kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot
 
 {% capture security_note %}
 <p>Every file you just created contains sensitive information!</p>
-<p>Now is the time to make backups and/or move these files off your machien to a more secure location.</p>
+<p>Now is the time to make backups and/or move these files off your machine to a more secure location.</p>
 {% endcapture %}
 {% include security-bubble.html content=security_note %}
 

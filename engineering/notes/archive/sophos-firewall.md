@@ -1,3 +1,10 @@
+---
+layout: base
+title: Sophos Firewall
+---
+
+# Notes: Archive: Sophos Firewall
+
 ## When installing
 * Connect a Keyboard and Monitor, you may have to do some CLI-level stuff on the firewall itself before the remote Web UI works
 * If you can, connect the WAN and LAN cables to the firewall, so that it will auto-detect and auto-setup the Interfaces for you during install.
