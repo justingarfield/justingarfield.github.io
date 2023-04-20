@@ -98,7 +98,7 @@ nav .navOptions a {
 
 footer {
     background: #ABBFC5;
-    min-height: 10em;
+    min-height: 110px;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -163,6 +163,7 @@ footer {
 
 .warning-bubble,
 .security-bubble {
+    opacity: 90%;
     border: 1px solid #CE3645;
     color: #0A1424;
     margin: 20px 0;
@@ -191,7 +192,7 @@ footer {
 }
 
 main {
-    padding: 1em;
+    padding: 2em;
 }
 
 article h2, h3, h4 {
@@ -200,4 +201,12 @@ article h2, h3, h4 {
 
 article p {
     margin: 0 0 .5em 0;
+}
+
+.page-bookmark {
+    opacity: 0%;
+}
+
+h2:hover .page-bookmark {
+    opacity: 100%;
 }

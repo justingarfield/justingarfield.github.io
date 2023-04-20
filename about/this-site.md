@@ -27,6 +27,8 @@ Since that time I've had UI/UX teams involved conjuring up all the styles and ma
 * [RedKetchup: Color Picker](https://redketchup.io/color-picker)
 * [w3schools: Emoji Unicode Reference](https://www.w3schools.com/charsets/ref_emoji.asp)
 * [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [diagrams.net](https://www.diagrams.net/)
 
 ## Things I learned
 

@@ -5,7 +5,7 @@ tags: talos cilium kubernetes
 ---
 
 * Overview
-* Creating the Configuration Files
+* <a href="#creating-the-configuration-files">Creating the Configuration Files</a>
 
 ## Overview
 
@@ -13,7 +13,7 @@ This post dives deeper into setting up a 3-node Control Plane using the [Talos L
 
 This post assumes you've already prepped your node(s) with a fresh install of Talos Linux.
 
-## <a name="#creating-config-files">Creating the configuration files</a> 
+## Creating the configuration files <a class="page-bookmark" id="#creating-the-configuration-files" href="#creating-the-configuration-files">&#128279;</a>
 
 {% capture warning_note %}
 <p>Every file created in this post will contain sensitive information!</p>
@@ -387,6 +387,8 @@ talosctl apply-config --insecure --nodes wk02.k8s.mydomain.tld --file ./machine-
 ```bash
 talosctl bootstrap --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com
 ```
+
+You only need to issue the bootstrap command on one of the Control Plane nodes. Since all of the nodes have the cluster information and Join key at-the-ready, they're simply just all waiting for etcd to come up. Running the boostrap command will create the initial etcd instance on the first control plane node, and the others will join automatically once they can see it running.
 
 ```
 talosctl kubeconfig --nodes hybrid-cp01.kubernetes.lesmerises.jgarfield.com
