@@ -1,3 +1,7 @@
+---
+layout: base
+---
+
 # Software Links
 
 | | | |
@@ -34,10 +38,10 @@ These ports are used _after_ you pick a Realm to connect to
 * WorldServerPort: `TCP/8085`
 * InstanceServerPort: `TCP/8086`
 
- ```
- account set gmlevel 1#1 3 -1
- account set gmlevel 2#1 3 -1
- ```
+```
+account set gmlevel 1#1 3 -1
+account set gmlevel 2#1 3 -1
+```
 
 # References
 

@@ -1,0 +1,28 @@
+<mxfile host="Electron" modified="2023-04-20T20:44:17.227Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.1.2 Chrome/106.0.5249.199 Electron/21.4.3 Safari/537.36" etag="cElzcvP4VTthFxodrUQB" version="21.1.2" type="device">
+  <diagram name="Page-1" id="wZxjHqgCIoRo5GscmIrK">
+    <mxGraphModel dx="1224" dy="981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pblzyf5jto1nyBRlFDrK-5" value="cp.k8s.mydomain.tld" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=left;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="210" y="370" width="440" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="pblzyf5jto1nyBRlFDrK-1" value="Gateway / Load Balancer&lt;br&gt;DNS / NTP&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="260" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pblzyf5jto1nyBRlFDrK-2" value="Control Plane&lt;br&gt;Node 01&lt;br&gt;192.168.22.9" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pblzyf5jto1nyBRlFDrK-3" value="Control Plane&lt;br&gt;Node 02&lt;br&gt;192.168.22.10" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pblzyf5jto1nyBRlFDrK-4" value="Control Plane&lt;br&gt;Node 03&lt;br&gt;192.168.22.11" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pblzyf5jto1nyBRlFDrK-6" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;b&gt;Upstream&lt;/b&gt;&lt;br&gt;Gateway / NTP / DNS VIP = 192.168.22.1&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CP Load Balancer VIP&amp;nbsp; &amp;nbsp; &amp;nbsp; = 192.168.22.8&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;b&gt;DNS&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;cp.k8s.mydomain.tld&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; = 192.168.22.8&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;cp01.k8s.mydomain.tld&amp;nbsp; &amp;nbsp; &amp;nbsp; = 192.168.22.9&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;cp02.k8s.mydomain.tld&amp;nbsp; &amp;nbsp; &amp;nbsp; = 192.168.22.10&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;cp03.k8s.mydomain.tld&amp;nbsp; &amp;nbsp; &amp;nbsp; = 192.168.22.11&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="290" y="40" width="280" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

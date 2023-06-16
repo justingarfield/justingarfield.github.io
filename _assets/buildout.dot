@@ -1,0 +1,27 @@
+digraph G {
+  # graph[rankdir="LR"]
+  subgraph cluster_sidero {
+    node [style=filled];
+    "Bootstrap Pi A\nwith Talos OS\nfrom SD Card" -> "Install Talos on Pi SSD";
+    "Install Talos on Pi SSD"->"Provision K8s Single-node Control Plane";
+    "Provision K8s Single-node Control Plane"->"Provision Sidero Metal";
+    label = "Sidero Nodes";
+    color=blue
+  }
+
+  subgraph cluster_control_plane {
+    node [style=filled];
+    "Provision Sidero Metal"->"Bootstrap Pi D\nwith Talos OS\nfrom PXE Boot";
+    "Provision Sidero Metal"->"Bootstrap Pi C\nwith Talos OS\nfrom PXE Boot";
+    "Provision Sidero Metal"->"Bootstrap Pi B\nwith Talos OS\nfrom PXE Boot";
+    label = "Kubernetes Control Plane Nodes";
+    color=blue
+  }
+
+  subgraph cluster_workers {
+    node [style=filled];
+    "Provision Sidero Metal"->"Bootstrap Worker PC\nwith Talos OS\nfrom PXE Boot";
+    label = "Kubernetes Worker Plane Nodes";
+    color=blue
+  }
+}

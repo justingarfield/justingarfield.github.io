@@ -1,0 +1,18 @@
+digraph G {
+  graph[rankdir="LR"]
+
+  "Windows 11 Provisioning PC"->"Subnet 192.168.100.0/24"
+  "Sidero Metal Node"->"Subnet 192.168.200.0/22"
+  "Kubernetes Control Plane Node 01"->"Subnet 192.168.200.0/22"
+  "Kubernetes Control Plane Node 02"->"Subnet 192.168.200.0/22"
+  "Kubernetes Control Plane Node 03"->"Subnet 192.168.200.0/22"
+  "Kubernetes Worker Plane Node 01"->"Subnet 192.168.200.0/22"
+
+  "Subnet 192.168.100.0/24"->"VLAN 100"
+  "Subnet 192.168.200.0/22"->"VLAN 200"
+
+  "VLAN 100"->"Network Switch"
+  "VLAN 200"->"Network Switch"
+
+  "Network Switch"->"Firewall for Routing"
+}
