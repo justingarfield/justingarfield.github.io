@@ -35,9 +35,9 @@ Just an approximation of times to expect for certain parts of this workflow. _(N
 | Approximate Duration | Description |
 |-|-|
 | 10-minutes | Cloudflare to see new NS Records being pointed to |
-| 30-minutes | Cloudflare to see that I had unlocked a domain |
-| 45-minutes | Waiting for everything per-domain for full transfer |
-| 4-5 days   | Waiting for GoDaddy to release domain _(this is normal)_ |
+| 40-minutes | Cloudflare to see that I had unlocked a domain |
+| 50-minutes | Waiting for everything per-domain for full transfer |
+| 4-5 days   | Waiting for GoDaddy to release domain as registrar _(this is normal)_ |
 
 ## Manually initiate zone scan
 

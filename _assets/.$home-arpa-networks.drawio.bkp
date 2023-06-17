@@ -1,13 +1,13 @@
-<mxfile host="Electron" modified="2023-06-16T20:19:13.413Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="GjPM9uZYR_DscwZSSl7J" version="21.2.8" type="device">
+<mxfile host="Electron" modified="2023-06-15T14:53:02.785Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="ig7jdFWDMWXTj_ax2oeO" version="21.2.8" type="device">
   <diagram name="Page-1" id="7Gg9U444FHJ7za269g-I">
-    <mxGraphModel dx="2058" dy="1180" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="971" dy="664" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="u8jxJLjl7EirvCYlJokh-10" value="Home Network A" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="40" y="320" width="200" height="280" as="geometry" />
         </mxCell>
-        <mxCell id="u8jxJLjl7EirvCYlJokh-6" value="Cloudflare DNS" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="u8jxJLjl7EirvCYlJokh-6" value="Azure Public DNS" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="40" y="40" width="580" height="100" as="geometry" />
         </mxCell>
         <mxCell id="u8jxJLjl7EirvCYlJokh-7" value="Synology DynDNS" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
