@@ -2,9 +2,16 @@
 layout: post
 title: PowerShell 3 - Pipelines
 date: 2014-02-21 00:00:00 -0500
-categories: 
-tags:
+categories: powershell
+tags: powershell
+excerpt: PowerShell 3 - Pipelines
 ---
+
+{% capture warning_note %}
+<p><strong>This is an archived and/or unfinished post from an old blog that I carried forward just to keep the information around.</strong></p>
+{% endcapture %}
+{% include archive-unfinished-bubble.html content=warning_note %}
+
 # Who is this article for?
 This is a pretty in-depth article about Pipelines in PowerShell. If you’re unfamiliar with writing PowerShell scripts, .NET classes, and/or Development in-general, this article may end up being confusing for you and I’d recommend starting with something a little more basic first.
 

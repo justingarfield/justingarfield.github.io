@@ -1,10 +1,12 @@
 ---
 layout: post
-title:  "GitHub Pages + Jekyll + WSL on Windows 11"
-date:   2023-02-16 10:46:57 -0500
+title: "GitHub Pages + Jekyll + WSL on Windows 11"
+date: 2023-02-16 10:46:57 -0500
 categories: stuff-and-things
 tags: 
+excerpt: 
 ---
+
 I attempted to follow the instructions and process verbatim in the GitHub Pages documentation while setting up this Jekyll site. Part of the instructions send you to the Jekyll site to setup Ruby / RubyGems / Bundler / Jekyll. I happened to be working on my Windows machine at the time and didn't feel like dealing with Ruby + DevKit + Windows headaches, so I opted for doing this all inside Windows Subsystem for Linux w/ Ubuntu.
 
 Even though I used the instructions for Windows Subsystem for Linux, the recommended BrightBox PPA repository for the packages kept returning 404s, which makes it hard to install the packages :)

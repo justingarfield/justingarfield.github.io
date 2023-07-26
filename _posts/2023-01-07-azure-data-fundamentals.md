@@ -1,6 +1,10 @@
 ---
 layout: post
 title: DP-900 - Microsoft Certified - Azure Data Fundamentals
+date: 2023-01-07 00:00:00 -0500
+categories: azure certification
+tags: azure certification
+excerpt: I got my Microsoft Certified - Azure Data Fundamentals Certification
 ---
 
 Having passed my AZ-900 - Microsoft Certified - Azure Fundamentals the day before, I decided to keep my luck going and decided to give the DP-900 exam a go for Azure Data Fundamentals.

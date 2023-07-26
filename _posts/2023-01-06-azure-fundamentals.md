@@ -1,6 +1,10 @@
 ---
 layout: post
 title: AZ-900 - Microsoft Certified - Azure Fundamentals
+date: 2023-01-06 00:00:00 -0500
+categories: azure certification
+tags: azure certification
+excerpt: I got my Microsoft Certified - Azure Fundamentals Certification
 ---
 
 It had been a while since I officially certified in anything, and I wanted to make sure the Microsoft Azure skills I had picked-up over the years were proper, on-track, and not way out in left-field. Can't hurt to have official certifications during a job hunt either!

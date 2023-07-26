@@ -4,7 +4,14 @@ title: BrowserSync – Part 1 - Installation, Setup, and the CLI
 date: 2015-02-18 00:00:00 -0500
 categories: 
 tags:
+excerpt: BrowserSync – Part 1 - Installation, Setup, and the CLI
 ---
+
+{% capture warning_note %}
+<p><strong>This is an archived and/or unfinished post from an old blog that I carried forward just to keep the information around.</strong></p>
+{% endcapture %}
+{% include archive-unfinished-bubble.html content=warning_note %}
+
 # What is BrowserSync?
 According to its website: “BrowserSync makes your tweaking and testing faster by synchronising file changes and interactions across multiple devices. It’s wicked-fast and totally free.”
 
