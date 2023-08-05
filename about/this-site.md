@@ -45,3 +45,6 @@ Since that time I've had UI/UX teams involved conjuring up all the styles and ma
 * [3] [https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-charset](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-charset)
 * [4] [https://developer.mozilla.org/en-US/docs/Web/CSS/Viewport_concepts#mobile_viewports](https://developer.mozilla.org/en-US/docs/Web/CSS/Viewport_concepts#mobile_viewports)
 * [5] [https://developer.mozilla.org/en-US/docs/Web/CSS/:checked#toggling_elements_with_a_hidden_checkbox](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked#toggling_elements_with_a_hidden_checkbox)
+
+https://endtimes.dev/no-javascript-dark-mode-toggle/
+https://www.w3schools.com/howto/howto_css_switch.asp

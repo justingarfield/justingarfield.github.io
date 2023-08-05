@@ -1,0 +1,28 @@
+---
+---
+
+.light-dark-mode-toggle-switch {
+    font-size: 250%;
+    vertical-align: middle;
+}
+
+.light-dark-mode-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.light-dark-mode-toggle-switch .dark {
+    transition: opacity 1s;
+    opacity: 0.4;
+}
+
+.light-dark-mode-toggle-switch input:checked + .light {
+    transition: opacity 1s;
+    opacity: 0.4;
+}
+
+.light-dark-mode-toggle-switch input:checked ~ .dark {
+    transition: opacity 1s;
+    opacity: 1;
+}

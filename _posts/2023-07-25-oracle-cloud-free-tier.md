@@ -20,7 +20,7 @@ In this post we:
 * Set-up a fresh baseline Terraform project to work with
 * Learn about and configure an OCI Identity Compartment
 * Learn about and configure an OCI Object Storage Bucket
-* Move our Terraform State file into an OCI Object Storage Bucket using S3 APIs
+* Move our Terraform State file into an OCI Object Storage Bucket using HTTP backend
 * Bonus: Add an account-wide Budget + Alert
 
 ## Foreword
@@ -333,59 +333,29 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 ![Storage Bucket](/img/posts/2023-07-25-oracle-cloud-free-tier/03.png)
 
-### Add the S3 Backend
+## Adding an HTTP-based storage Backend
 
 ```hcl
-backend "s3" {
-    bucket   = "terraform-state"
-    key      = "free-account/terraform.tfstate"
-    region   = "us-ashburn-1"
-    endpoint = "https://id9oxdiaaper.compat.objectstorage.us-ashburn-1.oraclecloud.com"
-    shared_credentials_file     = "./terraform-bucket-credentials"
-    skip_region_validation      = true
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    force_path_style            = true
+backend "http" {
+  update_method = "PUT"
 }
 ```
 
-{% capture warning_note %}
-<p><strong>Make sure you don't commit your <code>terraform-bucket-credentials</code> file. Add it to <code>.gitignore</code> or save it else-where (like offline storage or a Key Vault)</strong></p>
-{% endcapture %}
-{% include warning-bubble.html content=warning_note %}
-
 ```shell
+$ export TF_HTTP_ADDRESS=https://abcdefghijkl.objectstorage.us-ashburn-1.oci.customer-oci.com/p/abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz/n/abcdefghijkl/b/home-ops/o/terraform.tfstate
+
 $ terraform init
-
-Initializing the backend...
-Do you want to copy existing state to the new backend?
-  Pre-existing state was found while migrating the previous "local" backend to the
-  newly configured "s3" backend. No existing state was found in the newly
-  configured "s3" backend. Do you want to copy this state to the new "s3"
-  backend? Enter "yes" to copy and "no" to start with an empty state.
-
-  Enter a value: yes
-
-
-Successfully configured the backend "s3"! Terraform will automatically
-use this backend unless the backend configuration changes.
-
-Initializing provider plugins...
-- Reusing previous version of oracle/oci from the dependency lock file
-- Using previously-installed oracle/oci v5.5.0
-
-Terraform has been successfully initialized!
-
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
 ```
 
-![Terraform State in Object Storage](/img/posts/2023-07-25-oracle-cloud-free-tier/04.png)
+## Bonus: Deleting Compartments with logs
+
+If you make a mistake, change your mind, etc. re: a Compartment you've created; attempting to delete it may result in an Error or Failure state saying it couldn't be removed. This is most likely due to the fact that you have a Log Group and Logs attached to the Compartment at this point.
+
+If you attempt to go delete the Log and Log Groups directly, you'll find the OCI UI doesn't allow you to do this _(pretty stupid and aggravating)_.
+
+The easiest way to get around this is to open up the Deverloper Tools -> Cloud Shell in the OCI Web UI and use the `oci` CLI binary to remove them manually.
+
+You'll want to focus on the command sub-groups [`oci logging log`](https://docs.oracle.com/en-us/iaas/tools/oci-cli/3.30.1/oci_cli_docs/cmdref/logging/log.html) and [`oci logging log-group`](https://docs.oracle.com/en-us/iaas/tools/oci-cli/3.30.1/oci_cli_docs/cmdref/logging/log-group.html).
 
 ## Bonus: Add an account-wide budget + alert
 
@@ -503,6 +473,66 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ![Account-wide Budget](/img/posts/2023-07-25-oracle-cloud-free-tier/account-wide-budget.png)
 
 ![Account-wide Budget - Detailed](/img/posts/2023-07-25-oracle-cloud-free-tier/account-wide-budget-detailed.png)
+
+## Other: Using an S3-based Backend
+
+If the HTTP Backend isn't your cup-of-tea and/or you need to use S3 for other reasons regardless; here's an 
+example of using the S3 Backend instead...
+
+```hcl
+backend "s3" {
+    bucket   = "terraform-state"
+    key      = "free-account/terraform.tfstate"
+    region   = "us-ashburn-1"
+    shared_credentials_file     = "./terraform-bucket-credentials"
+    skip_region_validation      = true
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    force_path_style            = true
+}
+```
+
+{% capture warning_note %}
+<p><strong>Make sure you don't commit your <code>terraform-bucket-credentials</code> file. Add it to <code>.gitignore</code> or save it else-where (like offline storage or a Key Vault)</strong></p>
+{% endcapture %}
+{% include warning-bubble.html content=warning_note %}
+
+```shell
+$ export AWS_ACCESS_KEY_ID=abcdefghijklmnopqrstuvwxyzabcdefghijklmn
+$ export AWS_SECRET_ACCESS_KEY=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqr
+$ export AWS_S3_ENDPOINT=https://abcdefghijkl.compat.objectstorage.us-ashburn-1.oraclecloud.com
+
+$ terraform init
+
+Initializing the backend...
+Do you want to copy existing state to the new backend?
+  Pre-existing state was found while migrating the previous "local" backend to the
+  newly configured "s3" backend. No existing state was found in the newly
+  configured "s3" backend. Do you want to copy this state to the new "s3"
+  backend? Enter "yes" to copy and "no" to start with an empty state.
+
+  Enter a value: yes
+
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Reusing previous version of oracle/oci from the dependency lock file
+- Using previously-installed oracle/oci v5.5.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
+![Terraform State in Object Storage](/img/posts/2023-07-25-oracle-cloud-free-tier/04.png)
 
 ## Closing
 

@@ -279,3 +279,17 @@ h2:hover .page-bookmark {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+
+.container {
+    column-gap: 20px;
+    column-count: 2;
+}
+
+.card {
+    background-color: rgb(207, 232, 220);
+    border: 2px solid rgb(79, 185, 227);
+    padding: 10px;
+    margin: 0 0 1em 0;
+}
