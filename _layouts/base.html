@@ -1,3 +1,8 @@
+---
+header: true
+footer: true
+---
+
 <!DOCTYPE html>
 <html lang="{{ page.language | default: site.language | default: 'en' }}">
 <!-- jgarfield.com | Copyright Justin Garfield 2023 -->
@@ -5,13 +10,17 @@
 
 <body>
 
-  {% include nav.html %}
+  {% if page.footer %}
+    {% include new-nav.html %}
+  {% endif %}
 
   <main>
     {{ content }}
   </main>
 
-  <!--{% include footer.html %}-->
+  {% if page.footer %}
+    {% include footer.html %}
+  {% endif %}
 
 </body>
 </html>

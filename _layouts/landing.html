@@ -1,36 +1,24 @@
 ---
 layout: base
+footer: true
 ---
 
 <section class="welcome">
-  <div class="backdrop">
-    <img class="avatar" src="./img/justgar-the-barbarian.jpg" />
-    <h1>Welcome!</h1>
-    <p>I'm Justin Garfield<br /><br />Software / Cloud / Network Engineer</p>
-  </div>
-</section>
-
-<section class="">
-  <h1>25+ years</h1>
-  <p>From cracking open my first BASIC book at age 6, to getting into networking / IT, to web development and multiple cloud environments; Small business to Enterprise-sized, I've seen a lot of crazy stuff in my days, and haven't stopped learning since writing my first line of code.</p>
-</section>
-
-{{ content }}
-
-<section>
-  <h2>Recent Posts</h2>
-
-  {% assign posts = paginator.posts | default: site.posts %}
-
-  <ul class="frontpage-posts">
-    {% for post in posts limit: 5 %}
-    <li class="frontpage-post">
-      <article class="transparent-overlay">
-        <a href="{{ post.url | absolute_url }}">
-          <h2>{{ post.title | strip_html }}</h2>
-        </a>
-      </article>
+  <img class="avatar" src="./img/justgar-the-barbarian.jpg" />
+  <h2>Justin Garfield</h2>
+  <h3>Senior DevOps / Network Engineer</h3>
+  <ul>
+    <li>
+      <a href="https://github.com/justingarfield" target="_blank"><i class="fab fa-github fa-2x"></i></a>
     </li>
-    {% endfor %}
+    <li>
+      <a href="https://www.linkedin.com/in/justingarfield" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+    </li>
+    <li>
+      <a href="mailto:justin@jgarfield.com"><i class="fa fa-envelope fa-2x"></i></a>
+    </li>
+    <li>
+      <a href="tel:16033058631"><i class="fa fa-phone fa-2x"></i></a>
+    </li>
   </ul>
 </section>
