@@ -1,0 +1,98 @@
+---
+- employer: Self
+  title: Career Break
+  location: Home
+  startDate: 2021
+  endDate: Present
+  accomplishments: [
+    "Invested a large amount of time learning Kubernetes and containerization on heterogeneous hardware",
+    "Strengthened Linux skillset to help with newer automation techniques using IaC / GitOps practices",
+    "Acquired three Microsoft Azure certifications to reinforce knowledge accrued since starting with Azure 10+ years ago",
+    "Took time-off to spend with family and work on personal projects",
+    "Did some light .NET Core contracting work interfacing with Kelly Bluebook REST APIs"
+  ]
+
+- employer: Blackbaud, Inc.
+  title: Senior Software Engineer, Staff B
+  location: Remote
+  startDate: 2018
+  endDate: 2021
+  accomplishments: [
+    "Completed a giant Billing Management system migration into new .NET Core Microservices and Angular SPAs",
+    "Heavy use of Azure DevOps tooling, CI/CD, and Agile methodologies for daily tasks and project insight",
+    "Contributed to core libraries to standardize foundational components across teams (logging, telemetry, security)",
+    "Implemented custom messaging library / container image that allowed for local Rabbit MQ testing vs. nothing",
+    "Spent time as a Tech Lead, helping organize workloads, reporting status to Business stakeholders, and steering teams in the right direction when it came to newer architectures, patterns, and CI/CD processes",
+    "Implemented multiple types of automated testing to achieve meaningful code coverage and trained others"
+  ]
+
+- employer: SilverTech, Inc.
+  title: Senior Software Engineer
+  location: Manchester, NH
+  startDate: 2017
+  endDate: 2018
+  accomplishments: [
+    "Implemented Azure Service Fabric microservices to create a custom Stateless API Gateway with backing Stateful Services that external customers used to upload 5GB+ sized datasets consisting of SAN metrics",
+    "Provided guidance to remote teams deploying Service Fabric Clusters using ARM / Azure DSC, allowing them to host their own environments and quickly adapt to changes",
+    "Custom-built Azure DSC resources to deploy older C/C++ binaries that needed to run in Service Fabric",
+    "Made strong use of Azure Table / Blob / Queue Storage",
+    "Performed DevOps tasks, such as investigating environment issues and deploying changes over time",
+    "Helped team debug and troubleshoot Service Fabric applications and SQL Server issues"
+  ]
+
+- employer: IPT Associates
+  title: IT Systems / Software Engineer, Innovation, R&D
+  location: Billerica, MA
+  startDate: 2013
+  endDate: 2016
+  accomplishments: [
+    "Performed day-to-day operations for company HQ and supported remote employees working at The Pentagon",
+    "Used Azure to build SharePoint 2010 Farms for Development / QA; as well as a DR environment for existing farms",
+    "Prototyped a company-wide cloud infrastructure using Azure IaaS, Windows Server 2012 R2, Active Directory Federated Services, and Windows Application Proxy to host company directories, single sign-on and support BYOD",
+    "Implemented Information Rights Management (IRM) and Intune Mobile Device Management (MDM)",
+    "Oversaw the migration of a SharePoint 2010 on-prem instance to SharePoint Online using Sharegate tools",
+    "Implemented DLP policies for SharePoint / OneDrive for Business / Exchange Online",
+    "Implemented and achieved ISO 27001:2013 and ISO 27002:2013 certification",
+    "Implemented Ethernet Dedicated Internet (EDI) and migrated vendor hosted Lync to Skype Cloud PBX / PSTN"
+  ]
+
+- employer: Logging-In, LLC
+  title: CTO / Software Engineer
+  location: Manchester, NH / Hybrid
+  startDate: 2011
+  endDate: 2013
+  accomplishments: [
+    "Purchased an ERP product written in Classic ASP and performed a rewrite using .NET 4.5, REST APIs, OAuth 2, ThinkTecture Identity server, OData, SOLR, and cujo.js",
+    "Built a new Windows Server environment at a colo facility, configuring firewalls, Active Directory, SQL Server, and everything in-between",
+    "Updated legacy codebase to run in new environment, reducing average page load times by over 75% using modern security techniques and data access methods",
+    "Successfully migrated all 40+ clients from prior company’s datacenter to new equipment in under a week",
+    "Oversaw day-to-day support cases and worked with clients to resolve workflow and process issues in the product"
+  ]
+
+- employer: Pinpoint Global Communications
+  title: Software Engineer / Team Lead
+  location: Nashua, NH
+  startDate: 2009
+  endDate: 2011
+  accomplishments: [
+    "Spent time as a Team Lead, advocating for engineers to have the proper tools to do their roles(s) efficiently",
+    "Co-architected new LMS framework built in .NET 4 to help support the rapidly changing needs of clients; reducing overhead and strain on production infrastructure which resulted in a better customer experience and lowered costs",
+    "Implemented and migrated existing client applications to a 3-tier architecture to meet updated contractual obligations",
+    "Built a product that received an APEX Award for Publication Excellence in the category of 'new websites'",
+    "Worked closely with IT to build-out new production infrastructure on blade servers running VMware"
+  ]
+
+- employer: TimeTrade Systems, Inc.
+  title: Software Engineer / Team Lead
+  location: Tewksbury, MA
+  startDate: 2006
+  endDate: 2009
+  accomplishments: [
+    "Project Lead and Architect for new web-based scheduling application aimed at small-to-medium-sized businesses",
+    "Awarded US Patent 20100191566",
+    "Salesforce integration using SDK, APEX and SOQL",
+    "Implemented automated build, unit testing, and functional testing frameworks to help reduce overhead in both Development and QA departments",
+    "R&D of Web 2.0 frameworks for use in new state-of-the-art web application; heavy focus on the Dojo Toolkit",
+    "Brought bug and project tracking software in-house, reducing costs and improving productivity of team members",
+    "Worked closely with outside contractors to develop a Microsoft Outlook add-in for the new application"
+  ]
