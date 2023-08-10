@@ -34,7 +34,7 @@
   accomplishments: [
     "Implemented Azure Service Fabric microservices to create a custom Stateless API Gateway with backing Stateful Services that external customers used to upload 5GB+ sized datasets consisting of SAN metrics",
     "Provided guidance to remote teams deploying Service Fabric Clusters using ARM / Azure DSC, allowing them to host their own environments and quickly adapt to changes",
-    "Custom-built Azure DSC resources to deploy older C/C++ binaries that needed to run in Service Fabric",
+    "Built custom Azure DSC resources to deploy older C/C++ binaries that needed to run in Service Fabric",
     "Made strong use of Azure Table / Blob / Queue Storage",
     "Performed DevOps tasks, such as investigating environment issues and deploying changes over time",
     "Helped team debug and troubleshoot Service Fabric applications and SQL Server issues"
@@ -95,4 +95,70 @@
     "R&D of Web 2.0 frameworks for use in new state-of-the-art web application; heavy focus on the Dojo Toolkit",
     "Brought bug and project tracking software in-house, reducing costs and improving productivity of team members",
     "Worked closely with outside contractors to develop a Microsoft Outlook add-in for the new application"
+  ]
+
+- employer: InfoWave Technologies, Inc.
+  title: Web Programmer / Systems Engineer
+  location: Manchester, NH
+  startDate: 2004
+  endDate: 2006
+  accomplishments: [
+    "Project lead and architect for flagship ERP product",
+    "Improved and re-engineered ERP system, which involves quoting, selling, purchasing, invoicing, shipping, and accounting functionality",
+    "Worked closely with management to evaluate emerging technologies and find ways to leverage their features to enhance existing products",
+    "Managed other developers, created system specifications, and facilitated on-site visits to gather the requirements of new and existing customers"
+  ]
+
+- employer: LRGHealthcare
+  title: PC & Network Technician / CCNA
+  location: Laconia, NH
+  startDate: 1999
+  endDate: 2004
+  accomplishments: [
+    "One of the primary help desk contacts for a large healthcare organization. Worked closely with users and desktop issues, such as password changes, account setups, and new equipment installs.",
+    "Implemented new routers/switches for network upgrades and replacements. Performed daily operations and dealt with maintaining and monitoring of servers.",
+    "Managed network of over 1500 devices, including servers, thin clients, printers, and print servers at 30+ locations",
+    "Helped troubleshoot WAN connections and routers",
+    "Setup new solutions and integrated them into existing ones"
+  ]
+
+- employer: Rampid Interactive, LLC.
+  title: Web Programmer / Server Administrator
+  location: Stratham, NH
+  startDate: Summer 2003
+  accomplishments: [
+    "RedHat Systems administrator and PHP developer",
+    "Helped setup servers and debug source code for sites",
+    "Managed and optimized database servers and software. Setup SSL certificates for credit card processing and secure areas of sites",
+    "Worked with large internet hosts and setup new servers provided from them"
+  ]
+
+- employer: Shaker Regional School District
+  title: Computer Specialist
+  location: Belmont, NH
+  startDate: Summer 1999
+  accomplishments: [
+    "Repaired PCs and Network equipment for a local school district. Rebuilt PCs and components to get them ready for next year’s use. Cleaned off files, locked down with policies, and re-installed operating systems if necessary. Fixed rollers on printers and replaced any broken parts.",
+    "Re-configured systems to meet SAU’s standards",
+    "Installed new learning software on the network for next year’s students"
+  ]
+
+- employer: Noyes Fiber Systems
+  title: PC & Network Technician / Internship
+  location: Belmont, NH
+  startDate: Summer 1998
+  accomplishments: [
+    "Managed a Novell / Windows Client/Server network. Fixed PCs and set them up to end-user’s needs. Worked with AutoCAD servers utilizing MS SQL Server. Setup a small MS Exchange Server as well as building a MS Proxy server to work beside it.",
+    "Installed a T1 line / Proxy Server to offer high-speed internet access company-wide",
+    "Explored more ways to cut back on expenses and reduce company spending on IT",
+    "Did this as an internship for middle school"
+  ]
+
+- employer: Self
+  title: Web Developer
+  location: Belmont, NH
+  startDate: Summer 1997
+  accomplishments: [
+    "Worked with a local auction/consignment company to build an online presence",
+    "Used Perl / CGI to allow administration of listings and online bidding (before eBay existed)"
   ]

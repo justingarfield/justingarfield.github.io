@@ -21,7 +21,7 @@ footer: false
             <li>
                 <div class="header">
                     <h3>{{ experience.title }}</h3>
-                    <span>{{ experience.startDate }} - {{ experience.endDate }}</span>
+                    <span>{{ experience.startDate }} {% if experience.endDate %} - {% endif %} {{ experience.endDate }}</span>
                 </div>
                 <div class="employer">
                     {{ experience.employer }} ({{ experience.location }})
